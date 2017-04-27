@@ -98,14 +98,17 @@ def main():
             temp = companyList[idx]
             del companyList[idx]
             
-            if availUnits - temp.amount>compMax(companyList):
+            if availUnits - temp.amount>=compMax(companyList):
                 
                 tracker.append(temp)
                 availUnits -= temp.amount
                 
             else:
                 unlSpend = False
-
+                companyList.append(temp)
+            
+            
+            
         
         idx -= 1
     
