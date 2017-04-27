@@ -6,10 +6,18 @@ class Company:
         self.amount = amount
         self.price = price
         self.unitPrice = price/amount
+        
+    def __gt__(self,comp2):
+        return self.amount>comp2.amount
+        
+    def __str__(self):
+        
+        return ("Name: " + self.name + ", " + "Units: " + str(self.amount) + ", " + "Price: " + str(self.price))
 
+    
 
 # Merge Sort Algorithm has a complexity of order nlog(n)
-# In this case the list that is fed in has to be a list of companies
+# In this case the list has to be a list of companies
 def mergeSort(alist):
     if len(alist)>1:
         mid = len(alist)//2
@@ -44,6 +52,14 @@ def mergeSort(alist):
             j += 1
             k += 1
 
+def compMax(compList):
+    max = 0
+    for comp in compList:
+        if comp.amount > max:
+            max = comp.amount
+    
+    return max
+
 
 def main():
     in_file = open('pricedata.csv','r')
@@ -57,8 +73,52 @@ def main():
 
     mergeSort(companyList)
     for i in companyList:
-        print(i.unitPrice)
+        print(str(i.unitPrice)+"    "+str(i.amount))
+    
+    # This is the total number of units available for sale
+    availUnits = int(input("Enter the number of units in stock: "))
+    print()
     
     
+    idx = len(companyList)-1
+    
+    # tracker keeps track of the companies that should be bought from
+    tracker = []
+    
+    # Simply choose the companies with the highest price/unit as long as this is true
+    unlSpend = True 
+    
+    # Once available units becomes less than the highest number of units 
+    # a remaining company is willing to buy, the algorithm changes
+    
+    while idx >= 0 and unlSpend and len(companyList) != 0:
+        
+        if companyList[idx].amount<=availUnits:
+            
+            temp = companyList[idx]
+            del companyList[idx]
+            
+            if availUnits - temp.amount>=compMax(companyList):
+                
+                tracker.append(temp)
+                availUnits -= temp.amount
+                
+            else:
+                unlSpend = False
+                companyList.append(temp)
+            
+            
+            
+        
+        idx -= 1
+    
+    print("1")
+    for comp in tracker:
+        print (comp)
+        
+    print()        
+    print("2")
+    for comp in companyList:
+        print(comp)
     
 main()
