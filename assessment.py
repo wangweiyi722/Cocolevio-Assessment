@@ -6,10 +6,15 @@ class Company:
         self.amount = amount
         self.price = price
         self.unitPrice = price/amount
+        
+    def __str__(self):
+        
+        return ("Name: " + self.name + ", " + "Units: " + str(self.amount) + ", " + "Price: " + str(self.price))
 
+    
 
 # Merge Sort Algorithm has a complexity of order nlog(n)
-# In this case the list that is fed in has to be a list of companies
+# In this case the list has to be a list of companies
 def mergeSort(alist):
     if len(alist)>1:
         mid = len(alist)//2
@@ -59,6 +64,25 @@ def main():
     for i in companyList:
         print(i.unitPrice)
     
+    # This is the total number of units available for sale
+    availUnits = int(input("Enter the number of units in stock: "))
+    print()
     
+    soldUnits = 0
+    
+    idx = len(companyList)-1
+    
+    # tracker keeps track of the companies that should be bought from
+    tracker = []
+    while idx >= 0 and soldUnits < availUnits:
+        
+        if soldUnits + companyList[idx].amount<=availUnits:
+            tracker.append(companyList[idx])
+            soldUnits += companyList[idx].amount
+        
+        idx -= 1
+    
+    for comp in tracker:
+        print (comp)
     
 main()
